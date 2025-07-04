@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calm Quote Scramble</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #fdf6f0; /* pastel peach */
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #a084ca; /* soft lavender */
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        #word-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            max-width: 90%;
+        }
+        .word {
+            background-color: #ffffff;
+            padding: 10px 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .word:hover {
+            background-color: #e8dff5; /* pastel lavender */
+            transform: scale(1.05);
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #7a5cfa; /* soft violet */
+            text-align: center;
+            padding: 10px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            background-color: #a084ca;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #8c6cc8;
+        }
+    </style>
+</head>
+<body>
+    <h1>✨ Calm Quote Scramble ✨</h1>
+    <div id="word-container"></div>
+    <div id="result"></div>
+    <button onclick="startGame()">New Quote</button>
+    <audio id="bg-music" src="https://www.bensound.com/bensound-music/bensound-sunny.mp3" loop autoplay muted></audio>
+
+    <script>
+        const quotes = [
+            "Time is the greatest gift",
+            "Breathe and let go",
+            "Peace begins with a smile",
+            "You are enough just as you are",
+            "Slow down and enjoy the moment",
+            "Let yourself rest",
+            "Choose kindness every day",
+            "Feel the warmth of the sun",
+            "Your presence is your power",
+            "Gratitude brings peace",
+            "Small steps are progress",
+            "You are exactly where you need to be",
+            "Inhale courage exhale fear",
+            "Let the calm fill you",
+            "Simplicity is the ultimate sophistication",
+            "The present moment is all you have",
+            "Find beauty in the ordinary",
+            "Take a deep breath and relax",
+            "Trust the timing of your life",
+            "Listen to the whispers of your heart",
+            "Release what no longer serves you",
+            "Your peace is your priority",
+            "Let yourself bloom at your pace",
+            "Rest is productive",
+            "Stars can't shine without darkness",
+            "Every story has two sides",
+            "Breathe honey.This is just a chapter not your whole story",
+            "Take the chance while you still have the choice",
+            "At this point peace is everything",
+            "It's all about finding calm in chaos",
+            "Your worth isn't measured by your productivity.Rest is just as important as hustle",
+            "Seeing your smile makes my soul happy",
+            "Nothing you wearing is more important than your smile",
+            "Deep rivers run quiet",
+            "Never regret anything that made you smile",
+            "Difficult roads often lead to beautiful destination",
+            "Risking is better than regretting",
+            "Your only limit is your mind",
+            "You are allowed to take up space and breathe easy",
+            "You don’t have to rush, the sky is not in a hurry",
+            "Your presence is a quiet kind of sunshine",
+            "You don’t have to be perfect to be wonderful",
+            "You are loved even on quiet days",
+            "You don’t have to be perfect to be loved",
+            "Peace is also a form of progress",
+            "The world is softer with your kindness",
+            "Let today be a gentle chapter",
+            "Do small things with great love",
+            "Simplicity is the keynote of elegance",
+            "Let your dreams guide you",
+            "The journey shapes the soul",
+            "Happiness depends upon ourselves",
+            "Flowers do not hurry yet they bloom with grace",
+            "Soft days hold quiet kinds of strength within them",
+            "Take a deep breath and trust the process you’re in",
+            "You are allowed to be both a masterpiece and a work in progress",
+            "Rishi you are allowed to be exactly who you are",
+            "Rest is a gift you are allowed to give yourself",
+            "Let yourself celebrate the quiet strength you carry each day",
+            "May your dreams bloom softly just like you do",
+            "Your mind is a garden keep planting your ideas",
+            "Take the risk your future self will thank you",
+            "Let yourself grow beyond what you ever imagined possible",
+            "Trust your vision even if others don’t see it yet",
+            "Even small steps each day build something extraordinary",
+            "Stay curious stay kind, and keep building your dreams",
+            "Consistency will take your brilliance further than you imagine",
+            "Let your heart and mind work together as you grow",
+            "Your gentle persistence will move mountains in silence",
+            "Life is either a daring adventure or nothing",
+            "Quality is not an act it is a habit",
+            "The only way to do great work is to love what you do",
+            "Your mind is a gift let it rest and create",
+            "Your presence is a quiet kind of joy",
+            "Kindness leaves echoes that last forever",
+            "Warm sunsets remind the heart to slow down",
+            "You bring calm energy wherever you go",
+            "Smiles find their way through gentle moments",
+            "Silent nights often bring the clearest stars",
+            "Laughter paints color on gray days",
+            "Patience waters the seeds of tomorrow’s joy",
+            "Hope often blooms in quiet corners",
+            "Dreams find wings in moments of stillness",
+            "Gentle rain teaches patience to the earth",
+            "Soft winds carry whispers of quiet strength",
+            "Soft whispers can comfort restless spirits",
+            "Patience turns small beginnings into quiet triumphs",
+            "Simple joys often leave the deepest marks",
+            "Warm hands can calm restless storms",
+            "Gentle smiles can lift the heaviest hearts",
+            "Pebbles hold stories of gentle rivers",
+            "Stars hide at dawn, but never disappear",
+            "Roots grow deep where rain has lingered",
+            "New paths begin with silent choices",
+            "Soft whispers can comfort restless spirits",
+            "Sand remembers footprints even after waves",
+            "Wildflowers bloom in places least expected",
+            "Moonlight finds windows that welcome its glow",
+            "I am not afraid of storms for I am learning how to sail my ship",
+            "Even the darkest night will end and the sun will rise",
+            "Not all those who wander are lost",
+            "It is our choices that show what we truly are",
+            "Dreams are the touchstones of our characters",
+            "I am not afraid of storms for I am learning how to sail my ship",
+            "Make time for what matters",
+            "Grow through what you go through",
+            "Find beauty in the ordinary",
+            "To thine own self be true",
+            "We are born to be real not to be perfect",,
+            "Dream on dream until your dreams come true",
+            "Let your soul shine it’s better than sunshine"
+            "There’s beauty in the breakdown",
+            "No storm can shake my inmost calm",
+            "Hold on, if you feel like letting go",
+            "Smile it’s free therapy",
+            "Nothing is impossible the word itself says I’m possible",
+            "Books are a uniquely portable magic",
+            "You deserve gentle days"
+        ];
+
+        let currentQuote = "";
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function startGame() {
+            document.getElementById('result').textContent = "";
+            const quote = quotes[Math.floor(Math.random() * quotes.length)];
+            currentQuote = quote;
+            const words = quote.split(" ");
+            shuffle(words);
+            const container = document.getElementById('word-container');
+            container.innerHTML = "";
+            words.forEach(word => {
+                const span = document.createElement('span');
+                span.textContent = word;
+                span.className = 'word';
+                span.addEventListener('click', () => {
+                    span.style.display = 'none';
+                    selectedWords.push(word);
+                    checkAnswer();
+                });
+                container.appendChild(span);
+            });
+            selectedWords = [];
+        }
+
+        let selectedWords = [];
+
+        function checkAnswer() {
+            if (selectedWords.join(" ") === currentQuote) {
+                document.getElementById('result').textContent = "✨ Correct! Take a deep breath. ✨";
+                document.getElementById('result').style.color = "#7a5cfa";
+            }
+        }
+
+        document.body.addEventListener('click', function() {
+            const music = document.getElementById('bg-music');
+            music.muted = false;
+            music.play();
+        }, { once: true });
+
+        startGame();
+    </script>
+</body>
+</html>
