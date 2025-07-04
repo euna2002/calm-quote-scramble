@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calm Quote Scramble</title>
+<style>
+    body {
+        background-color: #f1f5f2;
+        font-family: 'Poppins', sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+    }
+    h1 {
+        color: #4f6f52;
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+    #word-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+    }
+    .word {
+        background-color: #ffffff;
+        padding: 10px 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        cursor: pointer;
+        user-select: none;
+        transition: background-color 0.3s;
+    }
+    .word:hover {
+        background-color: #dbe8d4;
+    }
+    #result {
+        margin-top: 20px;
+        font-size: 18px;
+        color: #3a4d39;
+    }
+    button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        background-color: #a7c7a5;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #8fb18e;
+    }
+</style>
+</head>
+<body>
+<h1>Calm Quote Scramble</h1>
+<div id="word-container"></div>
+<div id="result"></div>
+<button onclick="resetGame()">New Quote</button>
+
+<script>
+const quotes = [
+    "Time is the greatest gift",
+    "Breathe and let go",
+    "Peace begins with a smile",
+    "You are enough just as you are",
+    "Slow down and enjoy the moment",
+];
+
+let currentQuote = "";
+let selectedWords = [];
+
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
+function displayScramble() {
+    document.getElementById('result').innerText = "";
+    currentQuote = quotes[Math.floor(Math.random() * quotes.length)];
+    const words = currentQuote.split(" ");
+    shuffle(words);
+    const container = document.getElementById('word-container');
+    container.innerHTML = "";
+    words.forEach(word => {
+        const span = document.createElement('span');
+        span.innerText = word;
+        span.className = 'word';
+        span.addEventListener('click', () => selectWord(span));
+        container.appendChild(span);
+    });
+    selectedWords = [];
+}
+
+function selectWord(element) {
+    selectedWords.push(element.innerText);
+    element.style.backgroundColor = '#c9dbc5';
+    element.style.pointerEvents = 'none';
+    checkResult();
+}
+
+function checkResult() {
+    if (selectedWords.join(' ') === currentQuote) {
+        document.getElementById('result').innerText = "✨ Correct! Take a deep breath.";
+    }
+}
+
+function resetGame() {
+    displayScramble();
+}
+
+displayScramble();
+</script>
+</body>
+</html>
